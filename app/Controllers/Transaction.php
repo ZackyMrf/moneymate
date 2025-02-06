@@ -20,22 +20,28 @@ class Transaction extends Controller
     public function index()
     {
         $userId = session()->get('user.id');
+        $filterType = $this->request->getGet('type');
 
-        $transactions = $this->transactionModel
+        $transactionsQuery = $this->transactionModel
             ->select('transactions.*, categories.name as category_name')
             ->join('categories', 'categories.id = transactions.category_id')
-            ->where('transactions.user_id', $userId)
-            ->findAll();
+            ->where('transactions.user_id', $userId);
+
+        if ($filterType) {
+            $transactionsQuery->where('transactions.type', $filterType);
+        }
+
+        $transactions = $transactionsQuery->findAll();
 
         $data = [
-            "modalId" => 'deleteModal',
-            "modalIdLabel" => 'deleteModalLabel',
-            "modalTitle" => 'Konfirmasi Hapus',
-            "modalBody" => 'Apakah Anda yakin ingin menghapus transaksi ini?',
-            "modalConfirm" => 'confirmDelete',
-            "modalConfirmText" => 'Hapus',
-            "title" => 'Walltrack | Transaksi',
-            "transactions" => $transactions
+            'modalId' => 'deleteModal',
+            'modalIdLabel' => 'deleteModalLabel',
+            'modalTitle' => 'Konfirmasi Hapus',
+            'modalBody' => 'Apakah Anda yakin ingin menghapus transaksi ini?',
+            'modalConfirm' => 'confirmDelete',
+            'modalConfirmText' => 'Hapus',
+            'title' => 'Walltrack | Transaksi',
+            'transactions' => $transactions,
         ];
 
         return view('transactions/index', $data);
@@ -46,8 +52,8 @@ class Transaction extends Controller
         $categories = $this->categoryModel->where('user_id', session()->get('user.id'))->findAll();
 
         $data = [
-            "title" => 'Walltrack | Tambah Transaksi',
-            "categories" => $categories
+            'title' => 'Walltrack | Tambah Transaksi',
+            'categories' => $categories,
         ];
 
         return view('transactions/create', $data);
@@ -81,3 +87,4 @@ class Transaction extends Controller
         return $this->response->setJSON(['success' => false]);
     }
 }
+

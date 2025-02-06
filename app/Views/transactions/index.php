@@ -2,7 +2,16 @@
 <?= $this->section('content') ?>
 <div class="container mt-4">
     <h2 class="mb-4">Daftar Transaksi</h2>
-    <a href="<?= base_url('transactions/create') ?>" class="btn btn-primary mb-3 animate__animated animate__fadeIn"><i class="fas fa-plus"></i> Tambah Transaksi</a>
+    <div class="d-flex justify-content-between mb-3">
+        <a href="<?= base_url('transactions/create') ?>" class="btn btn-primary animate__animated animate__fadeIn"><i class="fas fa-plus"></i> Tambah Transaksi</a>
+        <div>
+            <select id="transactionFilter" class="form-control">
+                <option value="">Semua Transaksi</option>
+                <option value="debit">Transaksi Masuk</option>
+                <option value="kredit">Transaksi Keluar</option>
+            </select>
+        </div>
+    </div>
 
     <?= view('layouts/elements/_message_block') ?>
 
@@ -19,10 +28,10 @@
                 <th scope="col">Aksi</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="transactionTableBody">
             <?php $no = 1;
             foreach ($transactions as $transaction): ?>
-                <tr>
+                <tr data-type="<?= $transaction['type'] ?>">
                     <th scope="row" class="align-middle"><?= $no++ ?></th>
                     <td class="align-middle"><?= $transaction['category_name'] ?></td>
                     <td class="align-middle">
@@ -39,8 +48,9 @@
                     <td class="align-middle"><?= $transaction['transaction_date'] ?></td>
                     <td class="align-middle"><?= $transaction['description'] ?></td>
                     <td>
-                        <button class="btn btn-danger btn-delete animate__animated animate__fadeIn" data-id="<?= $transaction['id']; ?>" data-toggle="modal"
-                            data-target="#deleteModal"><i class="fas fa-trash-alt"></i> Hapus</button>
+                        <button class="btn btn-danger btn-delete animate__animated animate__fadeIn" data-id="<?= $transaction['id']; ?>" data-toggle="modal" data-target="#deleteModal">
+                            <i class="fas fa-trash-alt"></i> Hapus
+                        </button>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -61,24 +71,38 @@
 
         document.getElementById('confirmDelete').addEventListener('click', function () {
             if (deleteId) {
-                fetch('/transactions/delete', {
+                fetch('<?= base_url('transactions/delete') ?>', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
+                        '<?= csrf_header() ?>': '<?= csrf_hash() ?>'
                     },
                     body: JSON.stringify({ id: deleteId })
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            $('#deleteModal').modal('hide'); // Tutup modal
-                            location.reload(); // Refresh halaman
-                        } else {
-                            alert("Gagal menghapus transaksi!");
-                        }
-                    });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        $('#deleteModal').modal('hide'); // Tutup modal
+                        location.reload(); // Refresh halaman
+                    } else {
+                        alert("Gagal menghapus transaksi!");
+                    }
+                });
             }
+        });
+
+        // Filter transactions
+        document.getElementById('transactionFilter').addEventListener('change', function () {
+            const filterValue = this.value;
+            const rows = document.querySelectorAll('#transactionTableBody tr');
+            rows.forEach(row => {
+                if (filterValue === '' || row.getAttribute('data-type') === filterValue) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
         });
     });
 </script>
