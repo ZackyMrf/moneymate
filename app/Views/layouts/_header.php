@@ -3,7 +3,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title><?= $title ?? 'Walltrack | Catat pengeluaran kamu!'; ?></title>
+<title><?= $title ?? 'MoneyMate | Catat pengeluaran kamu!'; ?></title>
 
 <!-- Bootstrap core CSS -->
 <link rel="stylesheet" href="<?= base_url('assets/css/bootstrap.min.css'); ?>">

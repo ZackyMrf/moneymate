@@ -1,5 +1,6 @@
 <?= $this->extend('/layout'); ?>
 <?= $this->section('content'); ?>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <style type="text/css">
     main {
         height: 70vh;
@@ -53,7 +54,7 @@
 </style>
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div class="col-12 col-md-10 col-lg-8 mx-auto">
             <div class="jumbotron bg-gradient-primary text-white text-center animate__animated animate__fadeIn">
                 <h1 class="display-4 animate__animated animate__fadeInDown">Selamat Datang di MoneyMate</h1>
                 <hr class="my-4">

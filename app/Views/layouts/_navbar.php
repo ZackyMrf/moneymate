@@ -1,5 +1,6 @@
+<?php ?>
 <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
-    <a class="navbar-brand" href="/">
+    <a class="navbar-brand" href="<?= base_url(); ?>">
         <i class="fas fa-wallet"></i> MoneyMate
     </a>
     <button class="navbar-toggler animate__animated animate__fadeIn" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"

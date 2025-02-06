@@ -8,35 +8,47 @@
     <div class="container p-4 pb-0">
         <!-- Section: Social media -->
         <section class="mb-4">
-            <!-- Facebook -->
-            <a href="" class="btn btn-circle btn-md m-1 social-btn" 
-               style="background: linear-gradient(45deg, #3b5998, #8b9dc3);">
-                <i class="fab fa-facebook-f fa-bounce" style="color: white;"></i>
-            </a>
-            
-            <!-- X/Twitter -->
-            <a href="https://x.com/zackymrf_/" class="btn btn-circle btn-md m-1 social-btn" 
-               style="background: linear-gradient(45deg, #1da1f2, #0d95e8);">
-                <i class="fa-brands fa-x-twitter fa-shake" style="color: white;"></i>
-            </a>
-            
-            <!-- Instagram -->
-            <a href="https://www.instagram.com/zackymrf/" class="btn btn-circle btn-md m-1 social-btn" 
-               style="background: linear-gradient(45deg, #e1306c, #fd1d1d);">
-                <i class="fab fa-instagram fa-flip" style="color: white;"></i>
-            </a>
-            
-            <!-- LinkedIn -->
-            <a href="https://www.linkedin.com/in/zackymrf/" class="btn btn-circle btn-md m-1 social-btn" 
-               style="background: linear-gradient(45deg, #0077b5, #005582);">
-                <i class="fab fa-linkedin-in fa-bounce" style="color: white;"></i>
-            </a>
-            
-            <!-- GitHub -->
-            <a href="https://github.com/zackymrf" class="btn btn-circle btn-md m-1 social-btn" 
-               style="background: linear-gradient(45deg, #333333, #6e5494);">
-                <i class="fab fa-github fa-shake" style="color: white;"></i>
-            </a>
+            <div class="row justify-content-center">
+                <!-- Facebook -->
+                <div class="col-auto">
+                    <a href="" class="btn btn-circle btn-md m-1 social-btn" 
+                       style="background: linear-gradient(45deg, #3b5998, #8b9dc3);">
+                        <i class="fab fa-facebook-f fa-bounce" style="color: white;"></i>
+                    </a>
+                </div>
+                
+                <!-- X/Twitter -->
+                <div class="col-auto">
+                    <a href="https://x.com/zackymrf_/" class="btn btn-circle btn-md m-1 social-btn" 
+                       style="background: linear-gradient(45deg, #1da1f2, #0d95e8);">
+                        <i class="fa-brands fa-x-twitter fa-shake" style="color: white;"></i>
+                    </a>
+                </div>
+                
+                <!-- Instagram -->
+                <div class="col-auto">
+                    <a href="https://www.instagram.com/zackymrf/" class="btn btn-circle btn-md m-1 social-btn" 
+                       style="background: linear-gradient(45deg, #e1306c, #fd1d1d);">
+                        <i class="fab fa-instagram fa-flip" style="color: white;"></i>
+                    </a>
+                </div>
+                
+                <!-- LinkedIn -->
+                <div class="col-auto">
+                    <a href="https://www.linkedin.com/in/zackymrf/" class="btn btn-circle btn-md m-1 social-btn" 
+                       style="background: linear-gradient(45deg, #0077b5, #005582);">
+                        <i class="fab fa-linkedin-in fa-bounce" style="color: white;"></i>
+                    </a>
+                </div>
+                
+                <!-- GitHub -->
+                <div class="col-auto">
+                    <a href="https://github.com/zackymrf" class="btn btn-circle btn-md m-1 social-btn" 
+                       style="background: linear-gradient(45deg, #333333, #6e5494);">
+                        <i class="fab fa-github fa-shake" style="color: white;"></i>
+                    </a>
+                </div>
+            </div>
         </section>
     </div>
 
