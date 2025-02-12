@@ -32,35 +32,70 @@
 
 <?= view('layouts/elements/_modal') ?>
 
+
 <script>
-    let deleteId = null; // Variabel untuk menyimpan ID kategori yang akan dihapus
+    let deleteId = null; // Variabel untuk menyimpan ID transaksi yang akan dihapus
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll('.btn-delete').forEach(button => {
             button.addEventListener('click', function () {
-                deleteId = this.getAttribute("data-id"); // Simpan ID kategori
+                deleteId = this.getAttribute("data-id"); // Simpan ID transaksi
+
+                // Tampilkan konfirmasi SweetAlert2
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Anda tidak akan bisa mengembalikan data ini!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Jika dikonfirmasi, kirim permintaan penghapusan
+                        fetch('<?= base_url('/categories/delete') ?>', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest',
+                                '<?= csrf_header() ?>': '<?= csrf_hash() ?>'
+                            },
+                            body: JSON.stringify({ id: deleteId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire(
+                                    'Terhapus!',
+                                    'Transaksi berhasil dihapus.',
+                                    'success'
+                                ).then(() => {
+                                    location.reload(); // Refresh halaman
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Gagal!',
+                                    'Transaksi tidak bisa dihapus.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
             });
         });
 
-        document.getElementById('confirmDelete').addEventListener('click', function () {
-            if (deleteId) {
-                fetch('/categories/delete', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: JSON.stringify({ id: deleteId })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            $('#deleteModal').modal('hide'); // Tutup modal
-                            location.reload(); // Refresh halaman
-                        } else {
-                            alert("Gagal menghapus kategori!");
-                        }
-                    });
-            }
+        // Filter transactions
+        document.getElementById('transactionFilter').addEventListener('change', function () {
+            const filterValue = this.value;
+            const rows = document.querySelectorAll('#transactionTableBody tr');
+            rows.forEach(row => {
+                if (filterValue === '' || row.getAttribute('data-type') === filterValue) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
         });
     });
 </script>

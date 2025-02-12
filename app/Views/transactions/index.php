@@ -48,7 +48,7 @@
                     <td class="align-middle"><?= $transaction['transaction_date'] ?></td>
                     <td class="align-middle"><?= $transaction['description'] ?></td>
                     <td>
-                        <button class="btn btn-danger btn-delete animate__animated animate__fadeIn" data-id="<?= $transaction['id']; ?>" data-toggle="modal" data-target="#deleteModal">
+                        <button class="btn btn-danger btn-delete animate__animated animate__fadeIn" data-id="<?= $transaction['id']; ?>">
                             <i class="fas fa-trash-alt"></i> Hapus
                         </button>
                     </td>
@@ -58,38 +58,56 @@
     </table>
 </div>
 
-<?= view('layouts/elements/_modal') ?>
-
 <script>
     let deleteId = null; // Variabel untuk menyimpan ID transaksi yang akan dihapus
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll('.btn-delete').forEach(button => {
             button.addEventListener('click', function () {
                 deleteId = this.getAttribute("data-id"); // Simpan ID transaksi
-            });
-        });
 
-        document.getElementById('confirmDelete').addEventListener('click', function () {
-            if (deleteId) {
-                fetch('<?= base_url('transactions/delete') ?>', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                        '<?= csrf_header() ?>': '<?= csrf_hash() ?>'
-                    },
-                    body: JSON.stringify({ id: deleteId })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        $('#deleteModal').modal('hide'); // Tutup modal
-                        location.reload(); // Refresh halaman
-                    } else {
-                        alert("Gagal menghapus transaksi!");
+                // Tampilkan konfirmasi SweetAlert2
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Anda tidak akan bisa mengembalikan data ini!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Jika dikonfirmasi, kirim permintaan penghapusan
+                        fetch('<?= base_url('transactions/delete') ?>', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest',
+                                '<?= csrf_header() ?>': '<?= csrf_hash() ?>'
+                            },
+                            body: JSON.stringify({ id: deleteId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire(
+                                    'Terhapus!',
+                                    'Transaksi berhasil dihapus.',
+                                    'success'
+                                ).then(() => {
+                                    location.reload(); // Refresh halaman
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Gagal!',
+                                    'Transaksi tidak bisa dihapus.',
+                                    'error'
+                                );
+                            }
+                        });
                     }
                 });
-            }
+            });
         });
 
         // Filter transactions
